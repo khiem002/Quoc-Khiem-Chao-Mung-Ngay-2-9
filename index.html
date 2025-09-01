@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Cờ Việt Nam Hologram — Bác Hồ</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* Background mặc định: Bác Hồ */
+    body {
+      background: url("https://d4.violet.vn/uploads/blogs/735185/bac_ho_tuan_ve_500.jpg") no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 0;
+    }
+
+    /* Container cho lá cờ */
+    .flag-container {
+      position: relative;
+      width: 70vw;
+      height: 46.67vw;
+      max-width: 900px;
+      max-height: 600px;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      filter: url(#wavy);
+      opacity: 0;
+      animation: flagAppear 3s ease-out forwards;
+    }
+
+    @keyframes flagAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(-50%) scaleY(0.05);
+        filter: blur(20px) brightness(2);
+      }
+      40% {
+        opacity: 1;
+        transform: translateY(-50%) scaleY(1.1);
+        filter: blur(5px) brightness(1.5);
+      }
+      70% {
+        transform: translateY(-50%) scaleY(0.95);
+        filter: blur(2px) brightness(1.2);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(-50%) scaleY(1);
+        filter: blur(0) brightness(1);
+      }
+    }
+
+    /* Lá cờ */
+    .flag {
+      width: 100%;
+      height: 100%;
+      background: #DA251D;
+      position: relative;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.5);
+      box-shadow: 0 0 40px rgba(255,0,0,0.7);
+      border-radius: 4px;
+    }
+
+    /* Scan-line khi cờ xuất hiện */
+    .flag::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top, rgba(0,255,200,0.4), transparent 80%);
+      animation: scanUp 3s ease-out forwards;
+      z-index: 5;
+    }
+
+    @keyframes scanUp {
+      0% { height: 0%; opacity: 1; }
+      80% { height: 100%; opacity: 0.6; }
+      100% { height: 100%; opacity: 0; }
+    }
+
+    /* Ngôi sao vàng */
+    .star {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40%;
+      aspect-ratio: 1/1;
+      background: #FFFF00;
+      clip-path: polygon(
+        50% 0%,
+        61.8% 35.1%,
+        98.5% 35.1%,
+        68.2% 57%,
+        79.4% 91%,
+        50% 70%,
+        20.6% 91%,
+        31.8% 57%,
+        1.5% 35.1%,
+        38.2% 35.1%
+      );
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 25px rgba(255,255,0,0.9);
+      animation: starAppear 2s ease-out forwards, starPulse 3s infinite;
+      animation-delay: 2.5s;
+      opacity: 0;
+    }
+
+    @keyframes starAppear {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; filter: blur(20px); }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; filter: blur(5px); }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: blur(0); }
+    }
+
+    /* Hào quang sau cờ */
+    .halo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,0,0.4) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      animation: haloPulse 3s infinite;
+      filter: blur(60px);
+    }
+
+    /* Ánh sáng quét ngang */
+    .light-sweep {
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      animation: sweep 6s infinite;
+    }
+
+    @keyframes starPulse {
+      0%,100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 25px rgba(255,255,0,0.8); }
+      50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 60px rgba(255,255,0,1); }
+    }
+
+    @keyframes haloPulse {
+      0%,100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    @keyframes sweep {
+      0% { left: -150%; }
+      50% { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    /* Sao rơi */
+    .shooting-star {
+      position: absolute;
+      top: -10px;
+      width: 2px;
+      height: 80px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), transparent);
+      animation: fall 3s linear infinite;
+      z-index: 4;
+    }
+
+    @keyframes fall {
+      0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateX(300px) translateY(800px) rotate(45deg); opacity: 0; }
+    }
+
+    /* Radial beams */
+    .rays {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400%;
+      height: 400%;
+      background: repeating-conic-gradient(
+        rgba(255,255,0,0.15) 0deg 10deg,
+        transparent 10deg 20deg
+      );
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: spin 20s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Glitch effect */
+    .flag::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: inherit;
+      mix-blend-mode: screen;
+      animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(10% 0 85% 0); transform: translate(-5px, -2px); }
+      40% { clip-path: inset(40% 0 40% 0); transform: translate(5px, 2px); }
+      60% { clip-path: inset(70% 0 20% 0); transform: translate(-3px, 1px); }
+      80% { clip-path: inset(85% 0 5% 0); transform: translate(2px, -3px); }
+    }
+
+    /* Particles canvas */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Nút bật nhạc */
+    #playMusicBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 22px 34px;
+      font-size: 26px;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #ff0000, #ff6600);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    #playMusicBtn:hover {
+      transform: scale(1.2);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="rays"></div> <!-- Tia sáng radial -->
+
+  <div class="flag-container">
+    <div class="halo"></div>
+    <div class="flag">
+      <div class="light-sweep"></div>
+      <div class="star"></div>
+    </div>
+  </div>
+
+  <!-- Sao rơi -->
+  <div class="shooting-star" style="left:20%; animation-delay:1s;"></div>
+  <div class="shooting-star" style="left:70%; animation-delay:2s;"></div>
+  <div class="shooting-star" style="left:50%; animation-delay:4s;"></div>
+
+  <!-- Canvas cho particles -->
+  <canvas id="particles"></canvas>
+
+  <!-- SVG filter vẫy cờ -->
+  <svg>
+    <filter id="wavy">
+      <feTurbulence x="0" y="0" baseFrequency="0.02 0.05" numOctaves="3" seed="2">
+        <animate attributeName="baseFrequency" dur="10s" 
+          values="0.02 0.05;0.05 0.1;0.02 0.05" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" scale="20" />
+    </filter>
+  </svg>
+
+  <!-- Nhạc nền -->
+  <audio id="bgMusic" src="VIẾT TIẾP CÂU CHUYỆN HÒA BÌNH - Tùng Dương x Nguyễn Văn Chung - Official Music Video.mp3"></audio>
+
+  <!-- Nút bật nhạc -->
+  <button id="playMusicBtn">🎵 Bật nhạc</button>
+
+  <script>
+    const btn = document.getElementById("playMusicBtn");
+    const audio = document.getElementById("bgMusic");
+
+    btn.addEventListener("click", () => {
+      audio.currentTime = 255; // phát từ 4:15
+      audio.play();
+    });
+  </script>
+
+  <!-- Hiệu ứng particles -->
+  <script>
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.color = ['rgba(218,37,29,0.8)', 'rgba(255,255,0,0.8)'][Math.floor(Math.random()*2)];
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.02;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < 120; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function handleParticles() {
+      for (let i = 0; i < particlesArray.length; i++) {
+        const p = particlesArray[i];
+        p.update();
+        p.draw();
+        if (p.size <= 0.2) {
+          particlesArray[i] = new Particle();
+          particlesArray[i].x = Math.random() * canvas.width;
+          particlesArray[i].y = canvas.height;
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      handleParticles();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    });
+
+    initParticles();
+    animate();
+  </script>
+</body>
+</html>
